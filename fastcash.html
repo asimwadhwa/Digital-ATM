@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fast Cash</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; padding: 20px; }
+        .container { max-width: 400px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px gray; }
+        button { width: 90%; padding: 10px; margin: 10px 0; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; }
+        .fast-cash { background: #007bff; color: white; }
+        .fast-cash:hover { background: #0056b3; }
+        .output { margin-top: 20px; padding: 10px; background: #ddd; border-radius: 5px; }
+        .back-btn { background: #dc3545; color: white; }
+        .back-btn:hover { background: #a71d2a; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Fast Cash</h2>
+        <button class="fast-cash" onclick="saveTransaction(500)">₹500</button>
+        <button class="fast-cash" onclick="saveTransaction(1000)">₹1000</button>
+        <button class="fast-cash" onclick="saveTransaction(2000)">₹2000</button>
+        <button class="fast-cash" onclick="saveTransaction(5000)">₹5000</button>
+        <div class="output" id="output"></div>
+        <button class="back-btn" onclick="goBack()">Back</button>
+    </div>
+
+    <script>
+        function saveTransaction(amount) {
+            let transactionData = `Fast Cash: ₹${amount} - ${new Date().toLocaleString()}\n`;
+
+            let blob = new Blob([transactionData], { type: "text/plain" });
+
+            let a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "transaction.txt";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            document.getElementById('output').innerText = "Transaction Saved!";
+        }
+
+        function goBack() {
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>

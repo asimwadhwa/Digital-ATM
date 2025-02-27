@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balance Enquiry</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; padding: 20px; }
+        .container { max-width: 400px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px gray; }
+        .btn { background: #007bff; color: white; padding: 10px; width: 90%; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; margin: 10px 0; }
+        .btn:hover { background: #0056b3; }
+        .output { margin-top: 20px; padding: 10px; background: #ddd; border-radius: 5px; font-size: 18px; font-weight: bold; }
+        .back-btn { background: #dc3545; color: white; }
+        .back-btn:hover { background: #a71d2a; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Balance Enquiry</h2>
+        <button class="btn" onclick="checkBalance()">Check Balance</button>
+        <div class="output" id="balanceOutput"></div>
+        <button class="back-btn" onclick="goBack()">Back</button>
+    </div>
+
+    <script>
+        function checkBalance() {
+            fetch("transaction.txt")
+                .then(response => response.text())
+                .then(data => {
+                    const transactions = data.split("\n");
+                    let balance = 0;
+
+                    transactions.forEach(line => {
+                        if (line.startsWith("Deposit: ₹")) {
+                            let amount = parseInt(line.split("₹")[1]);
+                            balance += amount;
+                        }
+                    });
+
+                    document.getElementById("balanceOutput").innerText = "Total Balance: ₹" + balance;
+                })
+                .catch(error => {
+                    console.error("Error reading file:", error);
+                    alert("Error: Unable to read transaction file!");
+                });
+        }
+
+        function goBack() {
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>

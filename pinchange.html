@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change PIN</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        input { padding: 10px; margin: 5px; width: 200px; }
+        button { padding: 10px 20px; margin-top: 10px; cursor: pointer; }
+        #message { margin-top: 10px; font-weight: bold; color: green; }
+    </style>
+</head>
+<body>
+    <h2>Change PIN</h2>
+    <input type="password" id="oldPin" placeholder="Enter Old PIN"><br>
+    <input type="password" id="newPin" placeholder="Enter New PIN"><br>
+    <input type="password" id="confirmPin" placeholder="Confirm New PIN"><br>
+    <button onclick="changePin()">Update PIN</button>
+    <p id="message"></p>
+
+    <script>
+        let pinData = "PIN: 1234";  // Initial hardcoded PIN (will be stored internally)
+
+        function changePin() {
+            let oldPin = document.getElementById("oldPin").value;
+            let newPin = document.getElementById("newPin").value;
+            let confirmPin = document.getElementById("confirmPin").value;
+
+            if (!oldPin || !newPin || !confirmPin) {
+                document.getElementById("message").innerText = "All fields are required!";
+                return;
+            }
+
+            if (newPin !== confirmPin) {
+                document.getElementById("message").innerText = "New PINs do not match!";
+                return;
+            }
+
+            if (!pinData.includes(`PIN: ${oldPin}`)) {
+                document.getElementById("message").innerText = "Old PIN is incorrect!";
+                return;
+            }
+
+            let newPinData = pinData.replace(`PIN: ${oldPin}`, `PIN: ${newPin}`);
+            downloadFile(newPinData);
+        }
+
+        function downloadFile(content) {
+            let blob = new Blob([content], { type: "text/plain" });
+            let link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "transaction.txt";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            document.getElementById("message").innerText = "PIN updated! New transaction.txt downloaded.";
+        }
+    </script>
+</body>
+</html>
